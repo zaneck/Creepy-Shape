@@ -7,7 +7,7 @@ CFLAGS  = -pedantic -Wall -Wextra -Wstrict-prototypes
 CFLAGS += -Wtraditional-conversion -Wpointer-arith -Wcast-qual
 CFLAGS += -Wmissing-prototypes -std=c99
 CFLAGS += -g #DEBUG
-CFLAGS += -Werror #No human option
+CFLAGS += -Werror -D_GNU_SOURCE #No human option
 LDFLAGS = -ldl 
 
 CFLIBFLAGS = -fpic -I.
