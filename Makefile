@@ -8,9 +8,9 @@ CFLAGS += -Wtraditional-conversion -Wpointer-arith -Wcast-qual
 CFLAGS += -Wmissing-prototypes -std=c99
 CFLAGS += -g #DEBUG
 CFLAGS += -Werror -D_GNU_SOURCE #No human option
-LDFLAGS = -ldl 
+LDFLAGS = -ldl -g -lm 
 
-CFLIBFLAGS = -fpic -I.
+CFLIBFLAGS = -fPIC -I.
 LDLIBFLAGS = -shared
 
 ###------------------------------
@@ -18,17 +18,18 @@ LDLIBFLAGS = -shared
 ###------------------------------------------------------------
 BINARIES= main
 
-PLUGINS =  hello
+PLUGINS_SHAPES =  circle2d circle3d
 
 BIN_OBJ = $(addsuffix .o, $(BINARIES))
 
-PLU_PATH = $(addprefix plugins/, $(PLUGINS))
-PLU_OBJ = $(addsuffix .o, $(PLU_PATH))
-PLU_LIB = $(addsuffix .so, $(PLU_PATH))
+PLU_SHAPES_PATH = $(addprefix plugins/shapes/, $(PLUGINS_SHAPES))
+PLU_SHAPES_OBJ = $(addsuffix .o, $(PLU_SHAPES_PATH))
+PLU_SHAPES_LIB = $(addsuffix .so, $(PLU_SHAPES_PATH))
+
 
 TRASHFILES=*~
 
-all: $(BINARIES) $(PLU_LIB)
+all: $(BINARIES) $(PLU_SHAPES_LIB)
 
 
 ###------------------------------
@@ -37,11 +38,11 @@ all: $(BINARIES) $(PLU_LIB)
 main: main.o
 	$(CC) $(LDFLAGS) -o $@ $^ 
 
-plugins/hello.o: plugins/hello.c
-	$(CC) -c $^ -o $@ $(CFLAGS) $(CFLIBFLAGS)
+plugins/shapes/%.o: plugins/shapes/%.c
+	$(CC) $(CFLAGS) $(CFLIBFLAGS) -c $^ -o $@
 
-plugins/hello.so: plugins/hello.o
-	$(CC) $(LDLIBFLAGS) -o $@ $^
+plugins/shapes/%.so: plugins/shapes/%.o
+	$(CC) $(CFLIBFLAGS) $(LDLIBFLAGS) -o $@ $^
 
 
 ###------------------------------
