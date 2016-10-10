@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <stdarg.h>
 
 #include "position2D.h"
 #include "shape.h"
@@ -19,8 +20,20 @@ initPlugin(void){
 
 
 shape_t
-createCircle2D(double x, double y, double r){
+createShape(int nbfield, ...){
+  if (nbfield != 3){
+    printf("The circle shape need 3 fields, x, y, radius\n");
+    exit(EXIT_FAILURE);
+  }
   shape_t s;
+  double x, y, r;
+
+  va_list fields;
+  va_start(fields, nbfield);
+  x = va_arg(fields, double);
+  y = va_arg(fields, double);
+  r = va_arg(fields, double);
+  
   s = newShape(3, x, y, r);
   return s;
 }

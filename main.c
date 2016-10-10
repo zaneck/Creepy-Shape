@@ -49,7 +49,7 @@ main(void){
   char *test;
   char *error;  
   char* (*funInit)(void);
-  shape_t (*createCircle)(double, double, double);
+  shape_t (*createCircle)(int, ...);
   double (*valueAtCircle)(position2D_t , shape_t );
   void* libhandle;
   
@@ -71,7 +71,7 @@ main(void){
 
   test = (*funInit)();
   
-  *(void **) (&createCircle) = dlsym(libhandle, "createCircle2D");  
+  *(void **) (&createCircle) = dlsym(libhandle, "createShape");  
   error = dlerror();
   if (error != NULL) {
     fprintf(stderr, "%s\n", error);
@@ -90,7 +90,7 @@ main(void){
 
 
   shape_t circle;
-  circle = (*createCircle)(1.0, 1.0, 1.0);
+  circle = (*createCircle)(3, 1.0, 1.0, 1.0);
 
   double value;
   struct position2D_s p;
