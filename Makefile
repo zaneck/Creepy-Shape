@@ -13,35 +13,43 @@ LDFLAGS = -ldl -g -lm
 CFLIBFLAGS = -fPIC -I.
 LDLIBFLAGS = -shared
 
-###------------------------------
-### targets 
-###------------------------------------------------------------
+###-----------------------------------------------
+### TARGETS -------------------------------------- 
+###-----------------------------------------------
 BINARIES= main
 
-PLUGINS_SHAPES =  circle2d circle3d
+TOOLS= position2D shape
 
+PLUGINS_SHAPES =  circle2D circle3D
+
+###-----------------------------------------------
+### RULES TO MAKE THE WORLD ----------------------
+###-----------------------------------------------
 BIN_OBJ = $(addsuffix .o, $(BINARIES))
+
+TOOLS_OBJ = $(addsuffix .o, $(TOOLS))
 
 PLU_SHAPES_PATH = $(addprefix plugins/shapes/, $(PLUGINS_SHAPES))
 PLU_SHAPES_OBJ = $(addsuffix .o, $(PLU_SHAPES_PATH))
 PLU_SHAPES_LIB = $(addsuffix .so, $(PLU_SHAPES_PATH))
 
+TRASH = *~ */*~ */*/*~
 
-TRASHFILES=*~
+all: $(BINARIES) $(PLU_SHAPES_LIB) 
 
-all: $(BINARIES) $(PLU_SHAPES_LIB)
-
-
-###------------------------------
-### Main rules 
-###------------------------------------------------------------
-main: main.o
+###-----------------------------------------------
+### RULES ---------------------------------------- 
+###-----------------------------------------------
+main: main.o 
 	$(CC) $(LDFLAGS) -o $@ $^ 
 
-plugins/shapes/%.o: plugins/shapes/%.c
+./%.o: ./%.c 
+	$(CC) $(CFLAGS) -fPIC -c $^ -o $@
+
+plugins/shapes/%.o: plugins/shapes/%.c  
 	$(CC) $(CFLAGS) $(CFLIBFLAGS) -c $^ -o $@
 
-plugins/shapes/%.so: plugins/shapes/%.o
+plugins/shapes/%.so: plugins/shapes/%.o $(TOOLS_OBJ) 
 	$(CC) $(CFLIBFLAGS) $(LDLIBFLAGS) -o $@ $^
 
 
@@ -50,10 +58,10 @@ plugins/shapes/%.so: plugins/shapes/%.o
 ###------------------------------------------------------------
 .PHONY: clean realclean depend
 clean:
-	$(RM) $(BIN_OBJ) $(PLU_OBJ)
+	$(RM) $(BIN_OBJ) $(PLU_SHAPES_OBJ) $(TOOLS_OBJ) $(TRASH)
 
 realclean: clean 
-	$(RM) $(BINARIES) $(PLU_LIB)
+	$(RM) $(BINARIES) $(PLU_LIB) $(PLU_SHAPES_LIB)
 
 depend: 
 	$(CC) $(CFLAGS) -MM *.c
