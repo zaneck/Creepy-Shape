@@ -21,20 +21,25 @@ initPlugin(void){
 
 shape_t
 createShape(int nbfield, ...){
-  if (nbfield != 3){
-    printf("The circle shape need 3 fields, x, y, radius\n");
+  if (nbfield != 4){
+    printf("The circle shape need 4 fields, x, y, z and radius r\n");
     exit(EXIT_FAILURE);
   }
   shape_t s;
-  double x, y, r;
+  double x, y, z, r;
 
   va_list fields;
   va_start(fields, nbfield);
   x = va_arg(fields, double);
   y = va_arg(fields, double);
+  z = va_arg(fields, double);
   r = va_arg(fields, double);
+
+  char* l;
+  l = (char*) calloc((size_t)5, sizeof(char));  
+  strcpy(l, "c2d");
   
-  s = newShape(3, x, y, r);
+  s = newShape(l, 4, x, y, z, r);
   return s;
 }
 

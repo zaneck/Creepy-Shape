@@ -8,7 +8,7 @@
 #include "shape.h"
 
 shape_t
-newShape(int nbField, ...){
+newShape(char* id, int nbField, ...){
   shape_t s;
   va_list fields;
   double f;
@@ -26,12 +26,14 @@ newShape(int nbField, ...){
   va_end(fields);
 
   s->valueAt =NULL;
+  s->id = id;
   return s;
 }
 
 void
 freeShape(shape_t p){
   free(p->fields);
+  free(p->id);
   free(p);
 
 }
