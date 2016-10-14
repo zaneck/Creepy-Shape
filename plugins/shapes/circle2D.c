@@ -4,14 +4,14 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include "position2D.h"
+#include "position.h"
 #include "shape.h"
 #include "circle2D.h"
 
 char*
 initPlugin(void){
   char* l;
-  l = (char*) calloc((size_t)20, sizeof(char));  
+  l = (char*) calloc((size_t)5, sizeof(char));  
 
   strcpy(l, "c2d");
   printf("init ok\n");
@@ -39,10 +39,10 @@ createShape(int nbfield, ...){
 }
 
 double
-valueAt(position2D_t p, shape_t s){
-  struct position2D_s c;
+valueAt(position_t p, shape_t s){
+  struct position_s c;
   c.x = s->fields[0];
   c.y = s->fields[1];
   
-  return euclideanDist2D(p, &c) - s->fields[2];
+  return euclideanDist(p, &c) - s->fields[2];
 }

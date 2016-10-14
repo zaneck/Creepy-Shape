@@ -24,6 +24,8 @@ newShape(int nbField, ...){
     s->fields[i] = f;
   }
   va_end(fields);
+
+  s->valueAt =NULL;
   return s;
 }
 

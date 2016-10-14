@@ -18,7 +18,7 @@ LDLIBFLAGS = -shared
 ###-----------------------------------------------
 BINARIES= main
 
-TOOLS= position2D shape
+TOOLS= position shape pluginManager
 
 PLUGINS_SHAPES =  circle2D circle3D
 
@@ -40,7 +40,7 @@ all: $(BINARIES) $(PLU_SHAPES_LIB)
 ###-----------------------------------------------
 ### RULES ---------------------------------------- 
 ###-----------------------------------------------
-main: main.o 
+main: main.o $(TOOLS_OBJ)
 	$(CC) $(LDFLAGS) -o $@ $^ 
 
 ./%.o: ./%.c 
